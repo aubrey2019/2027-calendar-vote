@@ -1,8 +1,8 @@
 #!/usr/bin/env python3
 # -*- coding: utf-8 -*-
 """把 ntfy.sh 近 12 小时的投票增量合并进 votes-archive.json（GitHub Actions 定时跑）。"""
+import base64
 import json
-import os
 import urllib.request
 from pathlib import Path
 
@@ -43,12 +43,23 @@ def read_live():
     return out
 
 
+def raw_id(v):
+    """微信 ID 在公开数据里是 b64_ 编码，判断测试标记前先解码。"""
+    s = str(v or "")
+    if s.startswith("b64_"):
+        try:
+            return base64.b64decode(s[4:]).decode("utf-8")
+        except Exception:
+            return s
+    return s
+
+
 def main():
     merged = {}
     for r in read_archive() + read_live():
         if not isinstance(r, dict) or not r.get("vid") or not r.get("wechat_id"):
             continue
-        if str(r["wechat_id"]).startswith("__"):  # 过滤测试数据
+        if raw_id(r["wechat_id"]).startswith("__"):  # 过滤测试数据
             continue
         merged[r["vid"]] = r
 
