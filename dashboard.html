@@ -122,7 +122,8 @@ body{overflow:auto;background:var(--bg)}
     s.onerror = next;
     document.body.appendChild(s);
   }
-  load('backend.js' + q, function () { load('dashboard.js' + q, function () {}); });
+  var v = (q ? q + '&' : '?') + 'v=20261109b';
+  load('backend.js' + v, function () { load('dashboard.js' + v, function () {}); });
 })();
 </script>
 </body>

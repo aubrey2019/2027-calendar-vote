@@ -25,6 +25,12 @@
     return out;
   }
 
+  /* 时间统一转毫秒时间戳再比较：归档里是 +08:00，新提交是 UTC Z，不能按字符串比 */
+  function ts(v) {
+    var t = Date.parse(String(v || ''));
+    return isNaN(t) ? 0 : t;
+  }
+
   /* 按 vid 去重，同一微信号在同一组只保留最新一条 */
   function normalize(records) {
     var byVid = {}, latest = {};
@@ -32,15 +38,16 @@
       if (!r || !r.vid || !r.wechat_id || !r.orientation || !Array.isArray(r.picks)) return;
       r.wechat_id = dec(r.wechat_id);
       if (String(r.wechat_id).indexOf('__') === 0) return; // 过滤测试数据
+      r._ts = ts(r.created_at);
       byVid[r.vid] = r;
     });
     Object.keys(byVid).forEach(function (k) {
       var r = byVid[k];
       var key = r.wechat_id + '|' + r.orientation;
-      if (!latest[key] || String(r.created_at) > String(latest[key].created_at)) latest[key] = r;
+      if (!latest[key] || r._ts > latest[key]._ts) latest[key] = r;
     });
     return Object.keys(latest).map(function (k) { return latest[k]; })
-      .sort(function (a, b) { return String(b.created_at).localeCompare(String(a.created_at)); });
+      .sort(function (a, b) { return b._ts - a._ts; });
   }
 
   function list() {
