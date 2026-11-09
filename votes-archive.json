@@ -1,0 +1,233 @@
+[
+ {
+  "vid": "wb_3",
+  "wechat_id": "b64_YXVicmV5WTAwNw==",
+  "orientation": "v",
+  "picks": [
+   "V08",
+   "V20",
+   "V16"
+  ],
+  "created_at": "2026-11-09T22:04:07.34596+08:00"
+ },
+ {
+  "vid": "wb_4",
+  "wechat_id": "b64_YXVicmV5WTAwNw==",
+  "orientation": "h",
+  "picks": [
+   "H08",
+   "H41",
+   "H06"
+  ],
+  "created_at": "2026-11-09T22:05:37.361796+08:00"
+ },
+ {
+  "vid": "wb_7",
+  "wechat_id": "b64_d2UyMTNjaGF0",
+  "orientation": "h",
+  "picks": [
+   "H28",
+   "H35",
+   "H30"
+  ],
+  "created_at": "2026-11-09T22:20:24.273489+08:00"
+ },
+ {
+  "vid": "wb_8",
+  "wechat_id": "b64_d2UyMTNjaGF0",
+  "orientation": "v",
+  "picks": [
+   "V35",
+   "V27",
+   "V14"
+  ],
+  "created_at": "2026-11-09T22:20:55.35485+08:00"
+ },
+ {
+  "vid": "wb_9",
+  "wechat_id": "b64_aXJvbmljMDA5",
+  "orientation": "h",
+  "picks": [
+   "H08",
+   "H21",
+   "H42"
+  ],
+  "created_at": "2026-11-09T22:22:08.882056+08:00"
+ },
+ {
+  "vid": "wb_10",
+  "wechat_id": "b64_aXJvbmljMDA5",
+  "orientation": "v",
+  "picks": [
+   "V08",
+   "V39",
+   "V03"
+  ],
+  "created_at": "2026-11-09T22:22:30.50203+08:00"
+ },
+ {
+  "vid": "wb_11",
+  "wechat_id": "b64_dHQyMDAw",
+  "orientation": "h",
+  "picks": [
+   "H24",
+   "H54",
+   "H03"
+  ],
+  "created_at": "2026-11-09T22:30:29.483942+08:00"
+ },
+ {
+  "vid": "wb_12",
+  "wechat_id": "b64_TXUzMDA4",
+  "orientation": "v",
+  "picks": [
+   "V35",
+   "V22",
+   "V36"
+  ],
+  "created_at": "2026-11-09T22:30:54.155637+08:00"
+ },
+ {
+  "vid": "wb_13",
+  "wechat_id": "b64_aG9uaG9uMQ==",
+  "orientation": "h",
+  "picks": [
+   "H16",
+   "H51",
+   "H14"
+  ],
+  "created_at": "2026-11-09T22:31:50.960811+08:00"
+ },
+ {
+  "vid": "wb_14",
+  "wechat_id": "b64_UGFjaWZpYzEwMDE=",
+  "orientation": "v",
+  "picks": [
+   "V08",
+   "V12",
+   "V11"
+  ],
+  "created_at": "2026-11-09T22:32:20.783876+08:00"
+ },
+ {
+  "vid": "wb_15",
+  "wechat_id": "b64_eGlhb3dlaXpodQ==",
+  "orientation": "h",
+  "picks": [
+   "H31",
+   "H07",
+   "H12"
+  ],
+  "created_at": "2026-11-09T22:35:18.309756+08:00"
+ },
+ {
+  "vid": "wb_16",
+  "wechat_id": "b64_eGlhb3dlaXpodQ==",
+  "orientation": "v",
+  "picks": [
+   "V24",
+   "V03",
+   "V38"
+  ],
+  "created_at": "2026-11-09T22:35:41.069168+08:00"
+ },
+ {
+  "vid": "wb_17",
+  "wechat_id": "b64_Y2FzY2FzcA==",
+  "orientation": "h",
+  "picks": [
+   "H47",
+   "H13",
+   "H45"
+  ],
+  "created_at": "2026-11-09T22:38:11.606834+08:00"
+ },
+ {
+  "vid": "wb_18",
+  "wechat_id": "b64_bHJvbGU=",
+  "orientation": "h",
+  "picks": [
+   "H05",
+   "H39",
+   "H17"
+  ],
+  "created_at": "2026-11-09T22:38:42.869299+08:00"
+ },
+ {
+  "vid": "wb_19",
+  "wechat_id": "b64_SXJkZHNl",
+  "orientation": "v",
+  "picks": [
+   "V04",
+   "V15",
+   "V16"
+  ],
+  "created_at": "2026-11-09T22:40:25.887425+08:00"
+ },
+ {
+  "vid": "wb_20",
+  "wechat_id": "b64_RnVjazA5",
+  "orientation": "h",
+  "picks": [
+   "H48",
+   "H32",
+   "H11"
+  ],
+  "created_at": "2026-11-09T22:41:40.248297+08:00"
+ },
+ {
+  "vid": "wb_21",
+  "wechat_id": "b64_RnVjazA5",
+  "orientation": "v",
+  "picks": [
+   "V20",
+   "V26",
+   "V14"
+  ],
+  "created_at": "2026-11-09T22:42:03.689203+08:00"
+ },
+ {
+  "vid": "wb_22",
+  "wechat_id": "b64_bGFuZ2ZlaTIwMDA=",
+  "orientation": "h",
+  "picks": [
+   "H12",
+   "H06",
+   "H15"
+  ],
+  "created_at": "2026-11-09T22:43:25.215385+08:00"
+ },
+ {
+  "vid": "wb_23",
+  "wechat_id": "b64_bGFuZ2ZlaTIwMDA=",
+  "orientation": "v",
+  "picks": [
+   "V36",
+   "V40",
+   "V14"
+  ],
+  "created_at": "2026-11-09T22:43:48.318423+08:00"
+ },
+ {
+  "vid": "wb_24",
+  "wechat_id": "b64_emhvdXpob3Ux",
+  "orientation": "h",
+  "picks": [
+   "H48",
+   "H46",
+   "H32"
+  ],
+  "created_at": "2026-11-09T22:45:42.473692+08:00"
+ },
+ {
+  "vid": "wb_25",
+  "wechat_id": "b64_d2FuZ3NoYW5namll",
+  "orientation": "v",
+  "picks": [
+   "V17",
+   "V14",
+   "V12"
+  ],
+  "created_at": "2026-11-09T22:51:15.727983+08:00"
+ }
+]

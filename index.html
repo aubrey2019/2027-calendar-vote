@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="zh-CN" data-page-node-id="bcD7vFlwEnrBdnoo4t2eoM">
+<head data-page-node-id="xh6nvczbuRZytyYSm3QSJR">
+<meta charset="utf-8" data-page-node-id="ABCzSrXEkbTVpE4QhdH0gH">
+<meta name="viewport" content="width=device-width,initial-scale=1,maximum-scale=1,viewport-fit=cover" data-page-node-id="x9x9xco4F6mSkq9rk3ZMXT">
+<meta name="theme-color" content="#f7f6f2" data-page-node-id="g9QcrYWLH9LEGQhFKluYMP">
+<title>2027 台历 · 请帮我选照片</title>
+<script>
+  /* 访问参数随每个请求带上，不依赖会话 cookie */
+  window.__Q = location.search;
+  (function () {
+    var l = document.createElement('link');
+    l.rel = 'stylesheet';
+    l.href = 'styles.css' + window.__Q;
+    document.head.appendChild(l);
+  })();
+</script>
+</head>
+<body data-page-node-id="dPlDLwRRwb78ZGNyh55Zce">
+<div id="wxTip" style="display:none;margin:10px 16px 0;padding:10px 14px;background:#fbf0e2;border-radius:10px;font-size:12px;color:#8a5a26;text-align:center;line-height:1.5" data-page-node-id="J92gQHWMJ9y8pO2ZLoI73O">
+  微信内若照片加载不出来，请点右上角 ··· →「在浏览器中打开」
+</div>
+<div class="app" data-page-node-id="AgVapq9hba2BK53OmKqeB9">
+  <header class="hd" data-page-node-id="3nh2VJsSOdTVQ4Ec7rlySS">
+    <div class="hd-top" data-page-node-id="TLqw7jG5kSNZLiqy8lDzh7">
+      <div data-page-node-id="5wRHsk6ZmIcFEAhTnGJSZu">
+        <div class="eyebrow" data-page-node-id="9M2IvHEa2Y9fH8nlOIBjy4">AUBREY · 2027 TABLETOP CALENDAR</div>
+        <h1 data-page-node-id="KOPI3mpOXzQFopVt8yjQ3D">2027 台历 · 请帮我选照片</h1>
+        <p class="lead" data-page-node-id="FVgJw5xjFsNC6c8qtrb97d">今年做两套台历，横版、竖版各 13 张（封面 + 12 个月）。照片顺序<b data-page-node-id="LD5jhBZG2I5vp5Lx1yPL55">每次随机打乱</b>，每组请选出你最喜欢的 <b data-page-node-id="XA7RCEeygz2mhE6ljdH7jl">1–3 张</b>。</p>
+      </div>
+      <button class="ghost-btn" id="toBoard" data-page-node-id="qjj74uvvIH5lisRC63xFFm">实时看板 ↗</button>
+    </div>
+    <div class="toolbar" data-page-node-id="foMvLIER5OQCuSxaKMahDP">
+      <div class="seg" id="seg" data-page-node-id="du3qkZqcP3z2pIHXSGuwBT">
+        <button data-o="h" class="active" data-page-node-id="Gbo2NLPCw06fBGJKFVjZfr">横版 <span id="cntH" data-page-node-id="s8oOaag7CIqTWUG42JIQHM">–</span></button>
+        <button data-o="v" data-page-node-id="zYFrTMtRBeyvNlpClkDdt2">竖版 <span id="cntV" data-page-node-id="Qy4tZIatprBHles1SiZO5I">–</span></button>
+      </div>
+      <div class="toolbar-right" data-page-node-id="AHwp14QQeKKuLWR8Yd1LOV">
+        <span class="shuffle-tip" data-page-node-id="5sRJ1THqM5kMWDytXQ3ats">顺序已随机打乱，避免位置影响选择</span>
+        <button class="text-btn" id="shuffleBtn" data-page-node-id="oGGHUvhIaXGA172E1RLdcO">重新洗牌</button>
+        <button class="text-btn" id="speedBtn" data-page-node-id="MzOjuYtr0MSn5JwCIcRh6E">速度：中</button>
+        <button class="text-btn" id="pauseBtn" data-page-node-id="BLG5tEsFEyUSND9JDPSCFF">暂停滚动</button>
+      </div>
+    </div>
+  </header>
+
+  <main class="stage" data-page-node-id="liRz6nWoDE0yPbv0v6EKb2">
+    <div class="rail" id="rail" data-page-node-id="m7knAXIOEwQYcSJcYRAuJj">
+      <div class="rail-track" id="track" data-page-node-id="L2rwjxcI6KppaBol9TY2gj"></div>
+    </div>
+    <div class="stage-hint" data-page-node-id="1Er1Jc5xFiq0aHE8tkHjk5">左右滑动 / 滚轮自由浏览 · 往下拖进「Top 3 备选池」 · 轻点看大图 · 点右下角 ＋ 直接加入</div>
+  </main>
+
+  <footer class="pool-wrap" id="poolWrap" data-page-node-id="0FXaTbIPM5jJgX65eax2u5">
+    <div class="pool-head" data-page-node-id="VzJK0mvLM9EK5L0WSLfSTE">
+      <div data-page-node-id="ByxMhIz9Osm31wD0M80GGF"><strong data-page-node-id="hnaUh5445IsYwmI6WGT2fN">我的 Top 3 备选</strong><span id="poolCount" data-page-node-id="LHCB48WSBUFtr7ELpNCctD">0 / 3</span><span id="groupTag" style="margin-left:10px;color:var(--accent)" data-page-node-id="nwhbZoMz9GA2iAaQGehrnV"></span></div>
+      <button class="primary-btn" id="submitBtn" disabled data-page-node-id="38yI7AAJs6hVMSg7DMaH9l">提交投票</button>
+    </div>
+    <div class="pool" id="pool" data-page-node-id="zCR8FqkDYdEnEqkOyuC8CD">
+      <div class="slot" data-i="0" data-page-node-id="rAoofUmTD8pDTS33WonJfu"><span class="slot-num" data-page-node-id="DLxNYB2TE7qEniJPe3ndHQ">01</span><span class="slot-ph" data-page-node-id="D0X5tQZDlbbvEuuzjNQhJo">拖到这里</span></div>
+      <div class="slot" data-i="1" data-page-node-id="RvIoYOLztff4DGzbo0guMm"><span class="slot-num" data-page-node-id="HtqsHgykXcE1rV7OdVOBaZ">02</span><span class="slot-ph" data-page-node-id="BvY1ITs0iHfzt5lYHlBY7A">拖到这里</span></div>
+      <div class="slot" data-i="2" data-page-node-id="g1shYr9MgIigNPD5k27gOm"><span class="slot-num" data-page-node-id="CBgJuOLdLwGPlGLNfmoRoS">03</span><span class="slot-ph" data-page-node-id="71OZYNnsWc098AdH5aWv5C">拖到这里</span></div>
+    </div>
+  </footer>
+</div>
+
+<div class="toast" id="toast" data-page-node-id="Gq7KAxIMJ2doA2zldj1REW"></div>
+
+<div class="modal" id="lightbox" hidden data-page-node-id="xEeS0BoBPj4qisEQlHH6S5">
+  <div style="text-align:center" data-page-node-id="XGph57vRd3aqu7EfDxrpCr">
+    <img class="lightbox-img" id="lbImg" src="" alt="" data-page-node-id="68XnVYJJmGcrr1omBqR3rU">
+    <div class="lightbox-meta" data-page-node-id="HLI3vJxzefA8XD3TmnfKFv"><span id="lbMeta" data-page-node-id="gGWHVODIdMZmPqovTDpG5U"></span><button id="lbAdd" data-page-node-id="ftLPQvHfHyqgF0s0G2oUEh">＋ 加入备选</button><button id="lbClose" style="background:rgba(255,255,255,.2)" data-page-node-id="UtS1ZGyU7aKjTNj82dmZ3K">关闭</button></div>
+  </div>
+</div>
+
+<div class="modal" id="submitModal" hidden data-page-node-id="Id48Itdw1eFUgATYiI9mZP">
+  <div class="sheet" id="submitSheet" data-page-node-id="BHEDfX7nTX9tdJK8CgIPkf">
+    <h2 data-page-node-id="5FiftUn2s51Fo3cYD1dlk8">登记一下，方便去重</h2>
+    <p data-page-node-id="E2O6EMcmyrMrCYtB66Xz60">请填写你的微信 ID（微信号，不是昵称）。同一个微信 ID 在每一组只能投一次。</p>
+    <input id="wechatId" type="text" maxlength="60" placeholder="例如：aubrey2019" autocomplete="off" data-page-node-id="TfRDCCGBHDlgpR8deSY8xQ">
+    <div class="picks-summary" id="picksSummary" data-page-node-id="Kg0M4pxjbGgQEVnMyWc8Q8"></div>
+    <div class="row" data-page-node-id="xHNC84GiT7Og9b05LHRawo">
+      <button class="btn-quiet" id="cancelSubmit" data-page-node-id="02aQxig7jlRxEtUudzP5AK">再看看</button>
+      <button class="btn-go" id="confirmSubmit" data-page-node-id="wW2OL0XtjDaVoRNIKGICTI">确认提交</button>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  var q = window.__Q || '';
+  function load(src, next) {
+    var s = document.createElement('script');
+    s.src = src;
+    s.onload = next;
+    s.onerror = next;
+    document.body.appendChild(s);
+  }
+  load('backend.js' + q, function () { load('app.js' + q, function () {}); });
+})();
+</script>
+</body>
+</html>

@@ -1,0 +1,129 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>2027 台历 · 实时投票看板</title>
+<script>
+  /* 访问参数随每个请求带上，不依赖会话 cookie */
+  window.__Q = location.search;
+  (function () {
+    var l = document.createElement('link');
+    l.rel = 'stylesheet';
+    l.href = 'styles.css' + window.__Q;
+    document.head.appendChild(l);
+  })();
+</script>
+<style>
+body{overflow:auto;background:var(--bg)}
+.board{max-width:1120px;margin:0 auto;padding:28px 24px 60px}
+.bd-top{display:flex;align-items:flex-start;justify-content:space-between;gap:16px;flex-wrap:wrap}
+.bd-top h1{font-size:24px;margin:8px 0 6px}
+.bd-top p{margin:0;color:var(--sub);font-size:12.5px}
+.bd-actions{display:flex;align-items:center;gap:10px}
+.live{display:flex;align-items:center;gap:7px;font-size:11.5px;color:var(--sub)}
+.dot{width:7px;height:7px;border-radius:50%;background:var(--ok);box-shadow:0 0 0 4px rgba(63,125,98,.13)}
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:12px;margin:24px 0 20px}
+.stat{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:16px 18px}
+.stat .k{font-size:11px;color:var(--sub)}
+.stat .v{font-size:26px;font-weight:680;margin-top:6px;letter-spacing:-.02em}
+.stat .u{font-size:11px;color:var(--sub);margin-left:4px;font-weight:400}
+.bd-bar{display:flex;align-items:center;justify-content:space-between;gap:12px;margin-bottom:14px;flex-wrap:wrap}
+.bd-bar .seg button{padding:8px 18px}
+.bd-bar-right{display:flex;gap:10px;align-items:center}
+.mini-btn{border:1px solid var(--line);background:var(--surface);border-radius:9px;padding:8px 13px;font-size:12px;color:var(--ink)}
+.mini-btn:hover{border-color:var(--accent);color:var(--accent)}
+.err{background:#fbeae5;color:var(--danger);border-radius:10px;padding:10px 14px;font-size:12.5px;margin-bottom:14px;display:none}
+.grid{display:grid;grid-template-columns:1fr 300px;gap:18px;align-items:start}
+.panel{background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:18px}
+.panel h2{font-size:14px;margin:0 0 4px;font-weight:650}
+.panel .cap{font-size:11px;color:var(--sub);margin:0 0 16px}
+.rank{display:flex;flex-direction:column;gap:2px}
+.row{display:flex;align-items:center;gap:12px;padding:7px 8px;border-radius:10px}
+.row.top{background:#fbf5ed}
+.row:hover{background:#f6f4ef}
+.row .idx{width:26px;text-align:center;font-size:11px;color:var(--sub);font-variant-numeric:tabular-nums}
+.row.top .idx{color:var(--accent);font-weight:700}
+.row img{width:56px;height:40px;object-fit:cover;border-radius:7px;background:#eee;flex:none}
+.row .info{flex:1;min-width:0}
+.row .code{font-size:12.5px;font-weight:650}
+.row .name{font-size:10.5px;color:var(--sub);white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.bar{width:130px;height:6px;background:#eeeae3;border-radius:4px;overflow:hidden;flex:none}
+.bar i{display:block;height:100%;background:var(--accent);border-radius:4px}
+.row .num{width:34px;text-align:right;font-size:13px;font-weight:680;font-variant-numeric:tabular-nums}
+.cut{display:flex;align-items:center;gap:10px;margin:12px 0 8px;color:var(--accent);font-size:10.5px;font-weight:700;letter-spacing:.1em}
+.cut:before,.cut:after{content:"";height:1px;background:#e9d9c6;flex:1}
+.feed{display:flex;flex-direction:column;gap:11px;max-height:640px;overflow:auto}
+.feed-item{display:flex;flex-direction:column;gap:3px;padding-bottom:10px;border-bottom:1px solid #f0ede7}
+.feed-item .l1{font-size:12px;display:flex;justify-content:space-between;gap:8px}
+.feed-item .l1 b{font-weight:600}
+.feed-item .l2{font-size:11px;color:var(--sub)}
+.tag{font-size:10px;padding:1px 7px;border-radius:5px;background:var(--accent-soft);color:var(--accent);font-weight:600}
+.empty{color:var(--sub);font-size:12px;text-align:center;padding:32px 0}
+@media(max-width:860px){.grid{grid-template-columns:1fr}.stats{grid-template-columns:repeat(2,1fr)}.bar{width:70px}}
+@media(max-width:640px){.board{padding:18px 14px 50px}.bd-top h1{font-size:20px}.row .name{display:none}.bar{width:52px}}
+</style>
+</head>
+<body>
+<div class="board">
+  <div class="bd-top">
+    <div>
+      <div class="eyebrow">AUBREY · 2027 TABLETOP CALENDAR</div>
+      <h1>实时投票看板</h1>
+      <p>每 5 秒自动刷新 · 票数相同的按编号排序 · 前 13 名即每组入选的封面 + 12 个月</p>
+    </div>
+    <div class="bd-actions">
+      <span class="live"><i class="dot"></i><span id="lastUpdate">等待数据…</span></span>
+      <button class="ghost-btn" id="backVote">← 返回投票页</button>
+    </div>
+  </div>
+
+  <div class="stats">
+    <div class="stat"><div class="k">总投票记录</div><div class="v" id="sTotal">0<span class="u">条</span></div></div>
+    <div class="stat"><div class="k">横版组参与</div><div class="v" id="sH">0<span class="u">人</span></div></div>
+    <div class="stat"><div class="k">竖版组参与</div><div class="v" id="sV">0<span class="u">人</span></div></div>
+    <div class="stat"><div class="k">累计票数</div><div class="v" id="sPicks">0<span class="u">票</span></div></div>
+  </div>
+
+  <div class="err" id="err"></div>
+
+  <div class="bd-bar">
+    <div class="seg" id="seg">
+      <button data-o="h" class="active">横版组</button>
+      <button data-o="v">竖版组</button>
+    </div>
+    <div class="bd-bar-right">
+      <button class="mini-btn" id="refreshBtn">立即刷新</button>
+      <button class="mini-btn" id="exportBtn">导出排名 CSV</button>
+    </div>
+  </div>
+
+  <div class="grid">
+    <div class="panel">
+      <h2 id="rankTitle">横版组 · 照片票数排名</h2>
+      <p class="cap" id="rankCap">共 – 张候选</p>
+      <div class="rank" id="rank"></div>
+    </div>
+    <div class="panel">
+      <h2>最近投票</h2>
+      <p class="cap">微信 ID 已脱敏展示</p>
+      <div class="feed" id="feed"></div>
+    </div>
+  </div>
+</div>
+
+<script>
+(function () {
+  var q = window.__Q || '';
+  function load(src, next) {
+    var s = document.createElement('script');
+    s.src = src;
+    s.onload = next;
+    s.onerror = next;
+    document.body.appendChild(s);
+  }
+  load('backend.js' + q, function () { load('dashboard.js' + q, function () {}); });
+})();
+</script>
+</body>
+</html>
