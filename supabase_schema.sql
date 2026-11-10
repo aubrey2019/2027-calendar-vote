@@ -6,7 +6,8 @@ create table if not exists public.votes (
   vid         text not null unique,
   wechat_id   text not null,
   orientation text not null check (orientation in ('h', 'v')),
-  picks       text[] not null check (array_length(picks, 1) between 1 and 3),
+  -- coalesce 是必要的：array_length('{}',1) 返回 NULL，直接 between 会放过空数组
+  picks       text[] not null check (coalesce(array_length(picks, 1), 0) between 1 and 3),
   created_at  timestamptz not null default now(),
   constraint votes_wechat_group_key unique (wechat_id, orientation)
 );

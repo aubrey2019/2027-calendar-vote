@@ -41,11 +41,15 @@
   }
 
   function submit(rec) {
+    var picks = Array.isArray(rec.picks) ? rec.picks : [];
+    if (picks.length < 1 || picks.length > 3) {
+      return Promise.reject(new Error('请先选择 1–3 张照片'));
+    }
     var full = {
       vid: 'v_' + Date.now().toString(36) + '_' + Math.random().toString(36).slice(2, 10),
       wechat_id: enc(rec.wechat_id),
       orientation: rec.orientation,
-      picks: rec.picks,
+      picks: picks,
       created_at: new Date().toISOString()
     };
     return fetch(BASE + '/votes', {
