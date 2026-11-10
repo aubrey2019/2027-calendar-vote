@@ -1,12 +1,13 @@
-/* 投票数据层：ntfy.sh 追加写入 + 仓库归档合并，免登录、无后端服务器。 */
+/* Supabase 持久化后端（切换时把本文件内容覆盖到 backend.js 即可）
+   配置：把下面两个 __ 占位符换成项目的 Project URL 与 anon public key。
+   表结构见 supabase_schema.sql。投票写入即落 Postgres，不再依赖 ntfy 缓存。 */
 (function (global) {
   'use strict';
 
-  var TOPIC = 'calvote20270d4d9822ee402c9e298425e1';
-  var NTFY = 'https://ntfy.sh/' + TOPIC;
-  var ARCHIVE = 'votes-archive.json';
+  var URL = 'https://ovxmbdjwehtaygjmciyg.supabase.co';
+  var KEY = 'sb_publishable_iuKkHG2SAUjf4TVtWo5A1g_5VFRDlsF';
+  var BASE = URL.replace(/\/$/, '') + '/rest/v1';
 
-  /* 微信 ID 在公开仓库/消息队列中不明文存放（编码，非加密；前端解码后照常展示与导出） */
   function enc(v) {
     return 'b64_' + btoa(unescape(encodeURIComponent(String(v))));
   }
@@ -15,57 +16,28 @@
     if (t.indexOf('b64_') !== 0) return t;
     try { return decodeURIComponent(escape(atob(t.slice(4)))); } catch (_) { return t; }
   }
-
-  function parseNDJSON(text) {
-    var out = [];
-    String(text || '').split(/\r?\n/).forEach(function (line) {
-      if (!line.trim()) return;
-      try { out.push(JSON.parse(line)); } catch (_) {}
-    });
-    return out;
-  }
-
-  /* 时间统一转毫秒时间戳再比较：归档里是 +08:00，新提交是 UTC Z，不能按字符串比 */
-  function ts(v) {
-    var t = Date.parse(String(v || ''));
-    return isNaN(t) ? 0 : t;
-  }
-
-  /* 按 vid 去重，同一微信号在同一组只保留最新一条 */
-  function normalize(records) {
-    var byVid = {}, latest = {};
-    (records || []).forEach(function (r) {
-      if (!r || !r.vid || !r.wechat_id || !r.orientation || !Array.isArray(r.picks)) return;
-      r.wechat_id = dec(r.wechat_id);
-      if (String(r.wechat_id).indexOf('__') === 0) return; // 过滤测试数据
-      r._ts = ts(r.created_at);
-      byVid[r.vid] = r;
-    });
-    Object.keys(byVid).forEach(function (k) {
-      var r = byVid[k];
-      var key = r.wechat_id + '|' + r.orientation;
-      if (!latest[key] || r._ts > latest[key]._ts) latest[key] = r;
-    });
-    return Object.keys(latest).map(function (k) { return latest[k]; })
-      .sort(function (a, b) { return b._ts - a._ts; });
+  function headers(extra) {
+    var h = {
+      'apikey': KEY,
+      'Authorization': 'Bearer ' + KEY,
+      'Content-Type': 'application/json'
+    };
+    if (extra) Object.keys(extra).forEach(function (k) { h[k] = extra[k]; });
+    return h;
   }
 
   function list() {
-    var archive = fetch(ARCHIVE + '?t=' + Date.now(), { cache: 'no-store' })
-      .then(function (r) { return r.ok ? r.json() : []; })
-      .catch(function () { return []; });
-    var live = fetch(NTFY + '/json?poll=1', { cache: 'no-store' })
-      .then(function (r) { if (!r.ok) throw new Error('ntfy ' + r.status); return r.text(); })
-      .then(function (t) {
-        return parseNDJSON(t)
-          .filter(function (e) { return e.event === 'message' && e.message; })
-          .map(function (e) { try { return JSON.parse(e.message); } catch (_) { return null; } })
-          .filter(Boolean);
+    return fetch(BASE + '/votes?select=vid,wechat_id,orientation,picks,created_at&order=created_at.desc&limit=5000',
+      { headers: headers(), cache: 'no-store' })
+      .then(function (r) {
+        if (!r.ok) throw new Error('读取投票失败（HTTP ' + r.status + '）');
+        return r.json();
       })
-      .catch(function () { return []; });
-    return Promise.all([archive, live]).then(function (a) {
-      return normalize((Array.isArray(a[0]) ? a[0] : []).concat(a[1]));
-    });
+      .then(function (rows) {
+        return (rows || [])
+          .map(function (r) { return Object.assign({}, r, { wechat_id: dec(r.wechat_id) }); })
+          .filter(function (r) { return String(r.wechat_id).indexOf('__') !== 0; });
+      });
   }
 
   function submit(rec) {
@@ -76,12 +48,13 @@
       picks: rec.picks,
       created_at: new Date().toISOString()
     };
-    return fetch(NTFY + '/publish', {
+    return fetch(BASE + '/votes', {
       method: 'POST',
-      headers: { 'Content-Type': 'text/plain' },
+      headers: headers({ 'Prefer': 'return=representation' }),
       body: JSON.stringify(full)
     }).then(function (r) {
-      if (!r.ok) throw new Error('提交失败（HTTP ' + r.status + '），请稍后重试');
+      if (r.status === 409) throw new Error('这个微信 ID 已经在这一组投过啦');
+      if (!r.ok) throw new Error('提交失败（HTTP ' + r.status + '）');
       return full;
     });
   }
